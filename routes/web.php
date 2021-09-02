@@ -27,6 +27,11 @@ Route::group(['middleware' => 'varificarSesion'], function () {
         Route::get('/ldap', function(){return view('configuracion_general.ldap.index'); })->name('ldap');
     });
 
+    #Configuracion de Modulos
+    Route::group(['prefix' => 'configuracion-modulos'], function () {
+        Route::get('/modulos', function(){return view('configuracion_modulos.modulos.index'); })->name('modulos');
+    });
+
     #Configuracion avanzada
     Route::group(['prefix' => 'configuracion-avanzada'], function () {
         Route::get('/tecnologias', function(){return view('configuracion_avanzada.tecnologias.index'); })->name('tecnologias');
@@ -41,7 +46,7 @@ Route::group(['middleware' => 'varificarSesion'], function () {
         Route::get('/lanzador-pruebas', function(){return view('generador_pruebas.lanzador_pruebas.index'); })->name('pruebas');
     });
 
-    #Reportes
+    #Reportes localHost/reportes/reporte-prueba
     Route::group(['prefix' => 'reportes'], function () {
         Route::get('/reporte-prueba', function(){return view('reportes.reporte_pruebas.index'); })->name('reporte_prueba');
         Route::get('/informe-calidad', function(){return view('reportes.reporte_calidad.index'); })->name('reporte_calidad');
