@@ -25,12 +25,13 @@ Route::group(['middleware' => 'varificarSesion'], function () {
         Route::get('/usuarios', function(){return view('configuracion_general.usuarios.index'); })->name('usuarios');
         Route::get('/perfiles', function(){return view('configuracion_general.perfiles.index'); })->name('perfiles');
         Route::get('/ldap', function(){return view('configuracion_general.ldap.index'); })->name('ldap');
+        Route::get('/modulos', function(){return view('configuracion_general.modulos.index'); })->name('modulos');
     });
 
     #Configuracion de Modulos
-    Route::group(['prefix' => 'configuracion-modulos'], function () {
-        Route::get('/modulos', function(){return view('configuracion_modulos.modulos.index'); })->name('modulos');
-    });
+    // Route::group(['prefix' => 'configuracion-modulos'], function () {
+        // Route::get('/modulos', function(){return view('configuracion_modulos.modulos.index'); })->name('modulos');
+    // });
 
     #Configuracion avanzada
     Route::group(['prefix' => 'configuracion-avanzada'], function () {

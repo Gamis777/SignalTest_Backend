@@ -13,10 +13,22 @@
                   <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                   <a href="#" class="btn btn-primary">Go somewhere</a>-->
                   <a href="{{ route('usuarios') }}" class="card-text">Gestión de usuarios</a><br>
-                  <a href="{{ route('perfiles') }}" class="card-text">Gestión de perfiles</a>
+                  <a href="{{ route('perfiles') }}" class="card-text">Gestión de perfiles</a><br>
+                  <a href="{{ route('modulos') }}" class="card-text">Gestión de Modulos</a><br>
+
                 </div>
             </div>
         </div>
+        <!-- <div class="col-lg-3 col-6">
+            <div class="card">
+                <div class="card-header">
+                  <strong>Configuración de Modulos</strong>
+                </div>
+                <div class="card-body">
+                   <a href="{{ route('perfiles') }}" class="card-text">Gestión de perfiles</a> 
+                </div>
+            </div>
+        </div> -->
         <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="card">

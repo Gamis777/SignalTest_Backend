@@ -11,9 +11,9 @@
                     <thead>
                         <tr>
                             <th>N°</th>
-                            <th>Nombre de Perfil</th>
-                            <th>Usuarios</th>
-                            <th>Modulos</th>
+                            <th>Nombre de Modulo</th>
+                            <th>Submodulos</th>
+                            <!-- <th>Submodulos</th> -->
                             <th>Opciones</th>
                         </tr>
                     </thead>
@@ -28,7 +28,57 @@
     </div>
     <!-- /.col -->
 </div>
-
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <form id="form_perfiles">
+            <div class="modal-header">
+                <h2 class="modal-title" id="titulo_modal"></h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id_perfil" id="id_perfil">
+                <div class="form-group row">
+                    <label class="col-form-label col-4">Nombre <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <input type="text" name="nombre" class="form-control m-b-5" placeholder="Ingrese el nombre" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-4">Ruta <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <input type="text" name="ruta" class="form-control m-b-5" placeholder="Ingrese Ruta de Modulo" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-4">Icono <span class="text-danger">*</span></label>
+                    <div class="col-8">
+                        <input type="text" name="icono" class="form-control m-b-5" placeholder="Ingrese Icono de Modulo" >
+                    </div>
+                </div>
+            </div>
+            <div class="modal-header">
+                <h4 class="modal-title">Permisos de Acceso a Módulos</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row m-b-10 div_submodulos">
+                </div>
+                <hr>
+                <div id="error_submodulos"> </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 @endsection
 @section('javascript')
 <script>
@@ -98,7 +148,7 @@
             },
             buttons: [
                 {
-                    text: 'Agregar perfil',
+                    text: 'Agregar Modulo',
                     className: 'btn btn-success',
                     action: function ( e, dt, node, config ) {
                         abrirModal();
@@ -111,35 +161,36 @@
                 }, 10 );
             },
             ajax: {
-                url: url_perfiles,
-                dataSrc: "perfiles"
+                url: url_modulos,
+                dataSrc: "modulos"
             },
             columns: [
-                { data: "id_perfil" },
+                { data: "id_modulo" },
                 { data: "nombre" },
-                {
-                    data : "usuarios",
-                    render: function ( data, type,row ) {
-                        let usuarios = "";
-                        data.forEach(usuario => {
-                            usuarios += '<i class="fas fa-user"></i> '+usuario.nombres+' '+usuario.apellidos+'<br>'
-                        });
-                        return usuarios;
-                    }
-                },
                 {
                     data : "submodulos",
                     render: function ( data, type,row ) {
                         let submodulos = "";
                         data.forEach(submodulo => {
-                            submodulos += '<i class="'+submodulo.icono+'"></i> '+submodulo.nombre+'<br>'
+                            submodulos += '<i class="fas fa-user"></i> '+submodulo.nombre+'<br>'
+                            // submodulos += '<i class="fas fa-user"></i> '+submodulo.nombre+' '+submodulo.apellidos+'<br>'
                         });
                         return submodulos;
                     }
                 },
+                // {
+                //     data : "submodulos",
+                //     render: function ( data, type,row ) {
+                //         let submodulos = "";
+                //         data.forEach(submodulo => {
+                //             submodulos += '<i class="'+submodulo.icono+'"></i> '+submodulo.nombre+'<br>'
+                //         });
+                //         return submodulos;
+                //     }
+                // },
                 {
                     render: function ( data, type, row ) {
-                        return '<button class="btn btn-primary btn-sm" onClick="abrirModal('+row.id_perfil+')"><i class="fas fa-edit"></i> Editar</button> <button class="btn btn-danger btn-sm" onClick="eliminarPerfil('+row.id_perfil+')"><i class="fas fa-times"></i> Eliminar</button>';
+                        return '<button class="btn btn-primary btn-sm" onClick="abrirModal('+row.id_modulo+')"><i class="fas fa-edit"></i> Editar</button> <button class="btn btn-danger btn-sm" onClick="eliminarPerfil('+row.id_modulo+')"><i class="fas fa-times"></i> Eliminar</button>';
                     },
                     targets: 5
                 }
@@ -148,7 +199,7 @@
         });
     }
     function abrirModal(id_perfil = 0) {
-        const titulo_modal = id_perfil == 0 ? 'Crear Perfil' : 'Actualizar Perfil';
+        const titulo_modal = id_perfil == 0 ? 'Crear Modulo' : 'Actualizar Modulo';
         $('#titulo_modal').text(titulo_modal);
         $('#id_perfil').val(id_perfil);
         limpiarFormulario('form_perfiles');
@@ -156,13 +207,14 @@
         if(id_perfil != 0){
             $.ajax({
                 type: "GET",
-                url: url_perfiles+"/"+id_perfil,
+                url: url_modulos+"/"+id_perfil,
                 async: false,
                 success: function (response) {
                     console.log(response)
-                    $('input[name="nombre"]').val(response.perfil.nombre);
-                    $('input[name="descripcion"]').val(response.perfil.descripcion);
-                    response.perfil.submodulos.forEach(submodulo => {
+                    $('input[name="nombre"]').val(response.modulo.nombre);
+                    $('input[name="ruta"]').val(response.modulo.ruta);
+                    $('input[name="icono"]').val(response.modulo.icono);
+                    response.modulo.submodulos.forEach(submodulo => {
                         $("#opt-"+submodulo.id_submodulo).attr('checked', true);
                     });
                 },
@@ -177,7 +229,7 @@
     function enviarDatosPerfil(){
         const id_perfil = $('#id_perfil').val();
         const tipo_envio = id_perfil == 0 ? "POST" : "PUT";
-        const url_envio = id_perfil == 0 ? url_perfiles : url_perfiles+"/"+id_perfil;
+        const url_envio = id_perfil == 0 ? url_modulos : url_modulos+"/"+id_perfil;
 
         //Obtener array con los id de los submodulos seleccionados
         let submodulos_seleccionados = []
@@ -185,15 +237,16 @@
             submodulos_seleccionados.push(parseInt($(this).val()));
         });
         //////////////////////////////////////////////////////////
-        const datos_perfil = {
+        const datos_modulo = {
             nombre :  $("input[name='nombre']").val(),
-            descripcion :  $("input[name='descripcion']").val(),
+            ruta :  $("input[name='ruta']").val(),
+            icono :  $("input[name='icono']").val(),
             submodulos : submodulos_seleccionados
         }
         $.ajax({
             type: tipo_envio,
             url: url_envio,
-            data: JSON.stringify(datos_perfil),
+            data: JSON.stringify(datos_modulo),
             dataType: "json",
             contentType: "application/json;charset=utf-8",
             success: function (response) {
@@ -244,7 +297,7 @@
         }).then((result) => {
             if (result.value) {
                 $.ajax({
-                    url: url_perfiles+"/"+id_perfil,
+                    url: url_modulos+"/"+id_perfil,
                     type: 'DELETE',
                     success: function (response) {
                         toastr.success(response.mensaje);
