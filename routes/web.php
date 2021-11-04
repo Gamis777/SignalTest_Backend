@@ -48,6 +48,9 @@ Route::group(['middleware' => 'varificarSesion'], function () {
         Route::get('/matrices', function(){return view('generador_pruebas.matrices.index'); })->name('matrices');
         Route::get('/lanzador-pruebas', function(){return view('generador_pruebas.lanzador_pruebas.index'); })->name('pruebas');
         Route::get('/matrices-restringido', function(){return view('generador_pruebas.matrices_restringido.index'); })->name('matrices-restringido');
+        Route::get('/matrices-graph', function(){return view('generador_pruebas.matriz_graph.index'); })->name('matrices-graph');
+
+        
     });
 
     #Reportes localHost/reportes/reporte-prueba
