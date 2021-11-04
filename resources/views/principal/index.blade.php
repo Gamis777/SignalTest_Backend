@@ -15,6 +15,7 @@
                   <a href="{{ route('usuarios') }}" class="card-text">Gestión de usuarios</a><br>
                   <a href="{{ route('perfiles') }}" class="card-text">Gestión de perfiles</a><br>
                   <a href="{{ route('modulos') }}" class="card-text">Gestión de Modulos</a><br>
+                  <a href="{{ route('submodulos') }}" class="card-text">Gestión de Submodulos</a><br>
 
                 </div>
             </div>

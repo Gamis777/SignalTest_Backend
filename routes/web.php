@@ -26,6 +26,8 @@ Route::group(['middleware' => 'varificarSesion'], function () {
         Route::get('/perfiles', function(){return view('configuracion_general.perfiles.index'); })->name('perfiles');
         Route::get('/ldap', function(){return view('configuracion_general.ldap.index'); })->name('ldap');
         Route::get('/modulos', function(){return view('configuracion_general.modulos.index'); })->name('modulos');
+        Route::get('/submodulos', function(){return view('configuracion_general.submodulos.index'); })->name('submodulos');
+        Route::get('/personalizar', function(){return view('configuracion_general.personalizar.index'); })->name('personalizar');
     });
 
     #Configuracion de Modulos
@@ -45,6 +47,7 @@ Route::group(['middleware' => 'varificarSesion'], function () {
     Route::group(['prefix' => 'generador-pruebas'], function () {
         Route::get('/matrices', function(){return view('generador_pruebas.matrices.index'); })->name('matrices');
         Route::get('/lanzador-pruebas', function(){return view('generador_pruebas.lanzador_pruebas.index'); })->name('pruebas');
+        Route::get('/matrices-restringido', function(){return view('generador_pruebas.matrices_restringido.index'); })->name('matrices-restringido');
     });
 
     #Reportes localHost/reportes/reporte-prueba

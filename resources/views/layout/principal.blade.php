@@ -47,7 +47,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4" id="color-change">
     <!-- Brand Logo -->
     <a href="" class="brand-link navbar-primary"> 
       <img src="{{ asset('dist/img/entel-logo.png')}}"
@@ -65,7 +65,8 @@
           <img src="{{ asset('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a class="d-block">{{Session::get('datos_usuario')['nombres']}} {{Session::get('datos_usuario')['apellidos']}}</a>
+          <a class="d-block">{{Session::get('datos_usuario')['nombres']}} {{Session::get('datos_usuario')['apellidos']}} </a>
+          <p id="sesion_perfil"  >{{Session::get('datos_usuario')['id_perfil']}}</p> 
         </div>
       </div>
 
@@ -191,9 +192,18 @@
 <!-- Datos de api -->
 <script src="{{ asset('plugins/pdf/jspdf.min.js') }}"></script>
 <script src="{{ asset('plugins/pdf/jspdf.plugin.autotable.min.js') }}"></script>
+
+
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script> -->
+<script src="{{ asset('plugins/bootstrap/js/moment.min.js') }}"></script>
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script> -->
+<script src="{{ asset('plugins/bootstrap/js//bootstrap-datetimepicker.min.js') }}"></script>
+
+
 <script>
     var url_perfiles = "{{config('app.api_url')}}perfiles";
     var url_modulos = "{{config('app.api_url')}}modulos";
+    var url_submodulos = "{{config('app.api_url')}}submodulos";
     var url_usuarios = "{{config('app.api_url')}}usuarios";
     var url_tecnologias = "{{config('app.api_url')}}tecnologias";
     var url_operadores = "{{config('app.api_url')}}operadores-telefonicos";
@@ -206,11 +216,34 @@
     var url_sedes = "{{config('app.api_url')}}sedes";
     var url_ejecuciones = "{{config('app.api_url')}}ejecuciones";
     var url_pdf = "{{config('app.api_url')}}ejecuciones/test_pdf";
-
+    var url_custom = "{{config('app.api_url')}}customs";
+    var custom_perfil = '';
     function limpiarFormulario(nombreForm) {
         $("#"+nombreForm).validate().resetForm();
         $("#"+nombreForm)[0].reset();
     }
+
+    function obtener_custom(){
+        // console.log("idEjecucion: ",id);
+        let id_custom = document.getElementById('sesion_perfil');
+        custom_perfil = id_custom.innerText;
+        console.log(id_custom.innerText);
+        $.ajax({
+            url: url_custom+"/"+id_custom.innerText,
+            method: 'get',
+            dataType: 'json',
+            async: false,
+            success: function (data){
+                // console.log("id prueba ajax url_pruebas ",id);
+                // console.log("id ejecu url_pruebas ",data.prueba.ejecuciones[0].id_ejecucion);
+              console.log(data.custom.color);
+              $("#color-change").css("background-color",data.custom.color);
+
+            }
+        });
+        
+    }
+    obtener_custom();
 </script>
 @yield('javascript')
 </body>
